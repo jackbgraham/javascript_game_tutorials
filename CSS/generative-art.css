@@ -1,0 +1,16 @@
+/*this is a "global reset"*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /*elements padding and bordrs are included in it's total width and height*/
+}
+
+#canvas1 {
+    background: blue;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+}
