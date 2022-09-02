@@ -11,26 +11,63 @@ window.addEventListener('load', function(){
 
    //effect settings
     let size = 200;
+    let sides = 21;
+    let maxLevel = 3;
+    let spread = 0.5;
+    let branches = 2;
+    let scale = 0.5;
     ctx.save();
         //this is a save point, using restore will call back to this save
-    ctx.translate(100, 100);
+    ctx.translate(canvas.width/2, canvas.height/2);
         //this changes the origin point for object rotation
-    ctx.scale(0.5, 0.5);
+    ctx.scale(1, 1);
         //scale
-    ctx.rotate(5);
+    ctx.rotate(0);
         //this rotates from the origin point
         //these transform methods only affect the things which come after
         //javascript is top to bottom
         //addition uses of ctx.translate/scale/rotate are additive
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    //ctx.fillRect(0, 0, canvas.width, canvas.height);
         //this creates a quad
-    ctx.restore();
+    //ctx.restore();
         //calls the save state, which means the transforms will affect only the shape called before this point
-    ctx.beginPath();
+    function drawBranch(level){
+        if (level > maxLevel) return;
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(size, 0);
+        ctx.stroke();
+        for (let i = 0; i < branches; i++){
+            ctx.save();
+            ctx.translate(size - (size/branches) * i, 0);
+            ctx.rotate(spread);
+            ctx.scale(scale, scale);
+            drawBranch(level + 1);
+            ctx.restore();
+
+            ctx.save();
+            ctx.translate(size - (size/branches) * i, 0);
+            ctx.rotate(-spread);
+            ctx.scale(scale, scale);
+            drawBranch(level + 1);
+            ctx.restore();
+        }
+
+    }
+    drawBranch(0);
+
+    // for (let i = 0; i < sides; i++){
+    //
+    //     ctx.beginPath();
+    //     ctx.moveTo(0, 0);
+    //     ctx.lineTo(size, 0);
+    //     ctx.stroke();
+    //     ctx.rotate((Math.PI * 2)/sides);
+    // }
+
+    // ctx.restore();
+    //ctx.beginPath();
         //this draws a line and closes any previously open paths
-    ctx.moveTo(canvas.width/2, canvas.height/2);
-    ctx.lineTo(size, canvas.height/2);
-    ctx.stroke();
 });
 // load event fires after all assets on the page have been fully loaded
 //canvas 2d API is a built in that holds all canvas drawing methods and settings
