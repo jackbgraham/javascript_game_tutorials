@@ -19,10 +19,11 @@ window.addEventListener('load', function(){
     const branches = 2; //branches per segment
     let sides = 5; //number of branches, must be an integer, or the decimals will create a branch
 
-    let scale = 0.5; // size of the next level compared to parent branch
+    let scale = .5; // size of the next level compared to parent branch
     let spread = 1; // angle in radians from parent branch
 
     let color = 'hsl('+ Math.random() * 360 + ', 100%, 50%)';
+
     let lineWidth = Math.floor(Math.random() * 20 + 10); // random integer between 10 and 20
 
     // controls
@@ -31,6 +32,13 @@ window.addEventListener('load', function(){
     const label_spread = document.querySelector('[for="spread"]');
     slider_spread.addEventListener('change', function(e){
         spread = e.target.value;
+        updateSliders();
+        drawFractal();
+    });
+    const slider_sides = document.getElementById('sides');
+    const label_sides = document.querySelector('[for="sides"]');
+    slider_sides.addEventListener('change', function(e){
+        sides = e.target.value;
         updateSliders();
         drawFractal();
     });
@@ -100,6 +108,7 @@ window.addEventListener('load', function(){
             drawBranch(0);
         }
         ctx.restore();
+        updateSliders();
     }
     drawFractal();
 
@@ -109,7 +118,7 @@ window.addEventListener('load', function(){
         spread = (Math.random() * 2.9 + 0.1).toFixed(2);
         color = 'hsl('+ Math.random() * 360 + ', 100%, 50%)';
         lineWidth = Math.floor(Math.random() * 20 + 10);
-        drawFractal()
+        randomizeButton.style.backgroundColor = color;
     }
     randomizeButton.addEventListener('click', function(){
         randomizeFractal();
@@ -120,7 +129,16 @@ window.addEventListener('load', function(){
     function updateSliders(){
         slider_spread.value = spread;
         label_spread.innerText = 'Spread: ' + spread;
+        slider_sides.value = sides;
+        label_sides.innerText = 'Sides: ' + sides;
     }
+    window.addEventListener('resize', function(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        size = canvas.width < canvas.height ? canvas.width * 0.3 : canvas.height * 0.3;
+        drawFractal();
+        //add the shadow effects here also if desired
+    });
 });
 // load event fires after all assets on the page have been fully loaded
 //canvas 2d API is a built in that holds all canvas drawing methods and settings
