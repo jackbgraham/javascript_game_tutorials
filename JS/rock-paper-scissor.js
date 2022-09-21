@@ -1,15 +1,53 @@
-function sortNumArray(array){
-    for (let i=0; i < array.length; i++) {             //loop over the array
-        let compA = array.indexOf(i);                  //gets index of element A
-        let compB = array.indexOf(i + 1); //gets index of element B
-        if ( i > i.indexOf(i + 1))                     //compare value of i to i+1
-                                                       //remove i from the array
-            array.splice(i);
+const computerChoiceDisplay = document.getElementById('computer-choice');
+const playerChoiceDisplay = document.getElementById('player-choice');
+const resultDisplay = document.getElementById('result');
+const possibleChoices = document.querySelectorAll('button');
+let playerChoice
+let computerChoice
 
+possibleChoices.forEach(possibleChoice => possibleChoice.addEventListener('click', (e) => {
+    playerChoice = e.target.id
+    playerChoiceDisplay.innerHTML = playerChoice
+    generateComputerChoice()
+    getResult()
+}))
+
+function generateComputerChoice(){
+    const randomNumber = Math.floor(Math.random() * possibleChoices.length) + 1
+
+    if (randomNumber === 1){
+        computerChoice = 'rock'
     }
+    if (randomNumber === 2){
+        computerChoice = 'scissors'
+    }
+    if (randomNumber === 3){
+        computerChoice = 'paper'
+    }
+    computerChoiceDisplay.innerHTML = computerChoice
 }
 
-const testArray = [5, 6, 1, 2, 3, 4];
-
-console.log("test");
-console.log(sortNumArray(testArray));
+function getResult(){
+    if (computerChoice === playerChoice) {
+        result = `it's a draw!`
+    }
+    if (computerChoice === 'rock' && playerChoice === 'paper') {
+        result = `you won!`
+    }
+    if (computerChoice === 'rock' && playerChoice === 'scissors') {
+        result = `you lost!`
+    }
+    if (computerChoice === 'paper' && playerChoice === 'scissors') {
+        result = `you won!`
+    }
+    if (computerChoice === 'paper' && playerChoice === 'rock') {
+        result = `you lost!`
+    }
+    if (computerChoice === 'scissors' && playerChoice === 'rock') {
+        result = `you won!`
+    }
+    if (computerChoice === 'scissors' && playerChoice === 'paper') {
+        result = `you lost!`
+    }
+    resultDisplay.innerHTML = result
+}
